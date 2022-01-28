@@ -5,3 +5,4 @@ data/test_tfrecords
 data/train_images
 data/train_tfrecords
 training_summaries
+cassava-leaf-disease-classification

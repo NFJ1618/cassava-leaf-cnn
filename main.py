@@ -5,6 +5,8 @@ from data.StartingDataset import StartingDataset
 from networks.StartingNetwork import StartingNetwork
 from train_functions.starting_train import starting_train
 
+def test():
+    pass
 
 def main():
     # Get command line arguments
