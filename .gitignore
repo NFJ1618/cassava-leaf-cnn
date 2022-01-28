@@ -1,4 +1,7 @@
 __pycache__
 .vscode
-
+data/test_images
+data/test_tfrecords
+data/train_images
+data/train_tfrecords
 training_summaries

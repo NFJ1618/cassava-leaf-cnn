@@ -1,3 +1,8 @@
+# Group 7 Notes
+
+Data is kept in the data folder
+
+
 # ACM AI Projects Skeleton Code
 
 ## Setup
