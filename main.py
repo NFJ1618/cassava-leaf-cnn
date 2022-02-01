@@ -1,6 +1,6 @@
 #import os
 
-#import constants
+from constants import *
 from data.StartingDataset import StartingDataset
 #from networks.StartingNetwork import StartingNetwork
 #from train_functions.starting_train import starting_train
@@ -11,7 +11,7 @@ def test():
     """
     Function to test StartingDataset tensors and image display
     """
-    dataset = StartingDataset(csv_path='data/sample_submission_2.csv', folder_path='data/train_images')
+    dataset = StartingDataset(csv_path='data/sample_submission_2.csv', folder_path='data/train_images', img_size=IMG_SIZE)
     for i in range(len(dataset)):
         image, label = dataset[i]
         plt.imshow(image.permute(1,2,0)) #3rd RBG dimension being first confuses imshow
