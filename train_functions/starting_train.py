@@ -30,6 +30,8 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
     # Initalize optimizer (for gradient descent) and loss function
     optimizer = optim.Adam(model.parameters())
     loss_fn = nn.CrossEntropyLoss()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = model.to(device)
 
     step = 0
     for epoch in range(epochs):
@@ -38,21 +40,38 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # TODO: Backpropagation and gradient descent
+            images, labels = batch
+
+            # Move over images to GPU
+            images = images.to(device)
+            labels = labels.to(device)
+
+            # Forward propogation
+            outputs = model(images)
+
+            # Backpropogation
+            loss = loss_fn(outputs, labels)
+            loss.backward
+            optimizer.step()
+            optimizer.zero_grad()
 
             # Periodically evaluate our model + log to Tensorboard
             if step % n_eval == 0:
                 # TODO:
-                # Compute training loss and accuracy.
-                # Log the results to Tensorboard.
+                # Switch the model to evaluation mode
+                model.eval()
 
-                # TODO:
-                # Compute validation loss and accuracy.
-                # Log the results to Tensorboard.
                 # Don't forget to turn off gradient calculations!
+                with torch.no_grad():
+                    # Compute training loss and accuracy.
+                    # Log the results to Tensorboard.
+                    # TODO:
+                    # Compute validation loss and accuracy.
+                    # Log the results to Tensorboard.
+                    # Switch the model back to training mode
+                    model.train()
                 evaluate(val_loader, model, loss_fn)
-
             step += 1
-
         print()
 
 
