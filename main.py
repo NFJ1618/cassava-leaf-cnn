@@ -1,12 +1,23 @@
-import os
+#import os
 
-import constants
+#import constants
 from data.StartingDataset import StartingDataset
-from networks.StartingNetwork import StartingNetwork
-from train_functions.starting_train import starting_train
+#from networks.StartingNetwork import StartingNetwork
+#from train_functions.starting_train import starting_train
+#import torch
+import matplotlib.pyplot as plt
 
-def test():
-    pass
+def test(): 
+    """
+    Function to test StartingDataset tensors and image display
+    """
+    dataset = StartingDataset(csv_path='data/sample_submission_2.csv', folder_path='data/train_images')
+    for i in range(len(dataset)):
+        image, label = dataset[i]
+        plt.imshow(image.permute(1,2,0)) #3rd RBG dimension being first confuses imshow
+        print('Label: ', label)
+        plt.show(block=True) #Allows image to shown even when main called from terminal
+
 
 def main():
     # Get command line arguments
@@ -32,4 +43,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    test()
+    #main()
