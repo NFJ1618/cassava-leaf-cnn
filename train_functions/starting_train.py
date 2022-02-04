@@ -31,6 +31,8 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
     optimizer = optim.Adam(model.parameters())
     loss_fn = nn.CrossEntropyLoss()
 
+    tb_summary = torch.utils.tensorboard.SummaryWriter(summary_path)
+
     step = 0
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
@@ -38,12 +40,22 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # TODO: Backpropagation and gradient descent
+            images, labels = batch
 
+            outputs = model(images)
+
+            loss = loss_fn(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
             # Periodically evaluate our model + log to Tensorboard
+            
             if step % n_eval == 0:
                 # TODO:
                 # Compute training loss and accuracy.
                 # Log the results to Tensorboard.
+                # tb_summary.add_scalar('Loss (Training)', loss, epoch)
+                # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
                 # TODO:
                 # Compute validation loss and accuracy.
@@ -53,7 +65,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
 
             step += 1
 
-        print()
+        print('Epoch:', epoch, 'Loss:', loss.item())
 
 
 def compute_accuracy(outputs, labels):
@@ -79,4 +91,20 @@ def evaluate(val_loader, model, loss_fn):
 
     TODO!
     """
-    pass
+    model.eval()
+    correct = 0
+    total = 0
+
+    with torch.no_grad():
+        for batch in test_loader:
+            images, labels = batch
+            #images = images.to(device)
+            #labels = labels.to(device)
+
+            images = torch.reshape(images, (-1, 3, 600, 800))
+            output = model(images)
+            predictions = torch.argmax(outputs, dim = 1)
+
+            correct += (labels == predictions).int().sum()
+            total += len(predictions)
+    print('Accuracy:', (correct/total).item())
