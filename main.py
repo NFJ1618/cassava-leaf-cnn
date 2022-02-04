@@ -1,9 +1,8 @@
-#import os
-
+import os
 from constants import *
 from data.StartingDataset import StartingDataset
-#from networks.StartingNetwork import StartingNetwork
-#from train_functions.starting_train import starting_train
+from networks.StartingNetwork import StartingNetwork
+from train_functions.starting_train import starting_train
 #import torch
 import matplotlib.pyplot as plt
 
