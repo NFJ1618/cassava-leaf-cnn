@@ -1,10 +1,11 @@
 #import os
 
+import constants
 from constants import *
 from data.StartingDataset import StartingDataset
-#from networks.StartingNetwork import StartingNetwork
-#from train_functions.starting_train import starting_train
-#import torch
+from networks.StartingNetwork import StartingNetwork
+from train_functions.starting_train import starting_train
+import torch
 import matplotlib.pyplot as plt
 
 def test(): 
@@ -30,8 +31,8 @@ def main():
     print("Batch size:", constants.BATCH_SIZE)
 
     # Initalize dataset and model. Then train the model!
-    train_dataset = StartingDataset()
-    val_dataset = StartingDataset()
+    train_dataset = StartingDataset(csv_path='data/sample_submission_2.csv', folder_path='data/train_images', img_size=IMG_SIZE)
+    val_dataset = StartingDataset(csv_path='data/sample_submission_2.csv', folder_path='data/train_images', img_size=IMG_SIZE)
     model = StartingNetwork()
     starting_train(
         train_dataset=train_dataset,
@@ -43,5 +44,5 @@ def main():
 
 
 if __name__ == "__main__":
-    test()
-    #main()
+    #test()
+    main()

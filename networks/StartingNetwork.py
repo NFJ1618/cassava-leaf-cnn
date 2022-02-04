@@ -17,8 +17,8 @@ class StartingNetwork(torch.nn.Module):
         self.fc3 = nn.Linear(128,5)
         # self.sigmoid = nn.Sigmoid()
 
-        self.conv1 = nn.Conv(3,6, kernel_size=6,padding=2)
-        self.conv2 = nn.Conv(6,12,kernel_size=2, padding=1)
+        self.conv1 = nn.Conv2d(3,6, kernel_size=6,padding=2)
+        self.conv2 = nn.Conv2d(6,12,kernel_size=2, padding=1)
 
         self.pool = nn.MaxPool2d(2,2)
 
