@@ -31,7 +31,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
     optimizer = optim.Adam(model.parameters())
     loss_fn = nn.CrossEntropyLoss()
 
-    tb_summary = torch.utils.tensorboard.SummaryWriter(summary_path)
+    #tb_summary = torch.utils.tensorboard.SummaryWriter(summary_path)
 
     step = 0
     for epoch in range(epochs):
@@ -96,14 +96,14 @@ def evaluate(val_loader, model, loss_fn):
     total = 0
 
     with torch.no_grad():
-        for batch in test_loader:
+        for batch in val_loader:
             images, labels = batch
             #images = images.to(device)
             #labels = labels.to(device)
 
             images = torch.reshape(images, (-1, 3, 600, 800))
             output = model(images)
-            predictions = torch.argmax(outputs, dim = 1)
+            predictions = torch.argmax(output, dim = 1)
 
             correct += (labels == predictions).int().sum()
             total += len(predictions)
