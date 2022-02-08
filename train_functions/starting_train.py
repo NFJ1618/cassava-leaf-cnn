@@ -4,7 +4,7 @@ import torch.optim as optim
 from tqdm import tqdm
 
 
-def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
+def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, device):
     """
     Trains and evaluates a model.
 
@@ -26,6 +26,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
     val_loader = torch.utils.data.DataLoader(
         val_dataset, batch_size=batch_size, shuffle=True
     )
+    print("Data loaded")
 
     # Initalize optimizer (for gradient descent) and loss function
     optimizer = optim.Adam(model.parameters())
@@ -41,7 +42,8 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
         for batch in tqdm(train_loader):
             # TODO: Backpropagation and gradient descent
             images, labels = batch
-
+            images = images.to(device)
+            labels = labels.to(device)
             outputs = model(images)
 
             loss = loss_fn(outputs, labels)
@@ -61,7 +63,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval):
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
                 # Don't forget to turn off gradient calculations!
-                evaluate(val_loader, model, loss_fn)
+                evaluate(val_loader, model, loss_fn, device)
 
             step += 1
 
@@ -85,7 +87,7 @@ def compute_accuracy(outputs, labels):
     return n_correct / n_total
 
 
-def evaluate(val_loader, model, loss_fn):
+def evaluate(val_loader, model, loss_fn, device):
     """
     Computes the loss and accuracy of a model on the validation dataset.
 
@@ -98,8 +100,8 @@ def evaluate(val_loader, model, loss_fn):
     with torch.no_grad():
         for batch in val_loader:
             images, labels = batch
-            #images = images.to(device)
-            #labels = labels.to(device)
+            images = images.to(device)
+            labels = labels.to(device)
 
             images = torch.reshape(images, (-1, 3, 600, 800))
             output = model(images)

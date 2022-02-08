@@ -19,8 +19,8 @@ class StartingDataset(Dataset):
     def __getitem__(self, index):
         #inputs = torch.zeros([3, 224, 224])
         image = Image.open(self.image_ids[index])
-        inputs = ToTensor()(image)
-        inputs = functional.resize(inputs, self.img_size)
+        inputs = functional.resize(image, self.img_size)
+        inputs = ToTensor()(inputs)
 
         return inputs, self.labels[index]
 
