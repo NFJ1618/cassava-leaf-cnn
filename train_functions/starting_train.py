@@ -103,7 +103,7 @@ def evaluate(val_loader, model, loss_fn, device):
             images = images.to(device)
             labels = labels.to(device)
 
-            images = torch.reshape(images, (-1, 3, 600, 800))
+            images = torch.reshape(images, (-1, 3, 224, 224))
             output = model(images)
             predictions = torch.argmax(output, dim = 1)
 
