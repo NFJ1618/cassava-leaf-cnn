@@ -12,8 +12,8 @@ class StartingNetwork(torch.nn.Module):
         super().__init__()
         # self.flatten = nn.Flatten()
 
-        self.fc1 = nn.Linear(12*56*56, 6*50*50)
-        self.fc2 = nn.Linear(6*50*50, 128)
+        self.fc1 = nn.Linear(12*56*56, 256)
+        self.fc2 = nn.Linear(256, 128)
         self.fc3 = nn.Linear(128,5)
         # self.sigmoid = nn.Sigmoid()
 
