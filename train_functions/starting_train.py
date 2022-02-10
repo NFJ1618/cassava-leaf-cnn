@@ -99,7 +99,7 @@ def evaluate(val_loader, model, loss_fn, device):
     total = 0
 
     with torch.no_grad():
-        for batch in tqdm(val_loader):
+        for batch in val_loader:
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
