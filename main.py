@@ -52,4 +52,4 @@ def main(kaggle=False):
 
 if __name__ == "__main__":
     #test()
-    main(kaggle=True)
+    main()
