@@ -21,7 +21,7 @@ def test():
 
 def run(kaggle_path=""):
     # Get command line arguments
-    hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE}
+    hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE, "test_ratio": constants.TEST_RATIO}
 
     # TODO: Add GPU support. This line of code might be helpful.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -32,18 +32,17 @@ def run(kaggle_path=""):
 
     # Initalize dataset and model. Then train the model!
     if not kaggle_path:
-        train_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE)
-        val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE)
+        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE)
     else:
     #For Kaggle
-        train_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=constants.IMG_SIZE)
-        val_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=constants.IMG_SIZE)
+        dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=constants.IMG_SIZE)
+
+    
     print("Data in class")
     model = StartingNetwork()
     model = model.to(device)
     starting_train(
-        train_dataset=train_dataset,
-        val_dataset=val_dataset,
+        dataset=dataset,
         model=model,
         hyperparameters=hyperparameters,
         n_eval=constants.N_EVAL,

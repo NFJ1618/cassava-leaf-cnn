@@ -4,7 +4,7 @@ import torch.optim as optim
 from tqdm import tqdm
 
 
-def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, device):
+def starting_train(dataset, model, hyperparameters, n_eval, device):
     """
     Trains and evaluates a model.
 
@@ -17,15 +17,10 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
     """
 
     # Get keyword arguments
-    batch_size, epochs = hyperparameters["batch_size"], hyperparameters["epochs"]
+    batch_size, epochs, test_ratio = hyperparameters["batch_size"], hyperparameters["epochs"], hyperparameters["test_ratio"]
 
+    train_loader, val_loader = dataset.split_test_train_data(dataset, batch_size, test_ratio)
     # Initialize dataloaders
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True
-    )
-    val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=batch_size, shuffle=True
-    )
     print("Data loaded")
 
     # Initalize optimizer (for gradient descent) and loss function
@@ -41,6 +36,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
         # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             # TODO: Backpropagation and gradient descent
+            model.train()
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
@@ -100,7 +96,6 @@ def evaluate(val_loader, model, loss_fn, device):
 
     with torch.no_grad():
         for batch in val_loader:
-            print("Evaluating")
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
@@ -112,4 +107,3 @@ def evaluate(val_loader, model, loss_fn, device):
             correct += (labels == predictions).int().sum()
             total += len(predictions)
     print('Accuracy:', (correct/total).item())
-    model.train()
