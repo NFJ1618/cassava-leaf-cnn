@@ -19,9 +19,9 @@ def test():
         plt.show(block=True) #Allows image to shown even when main called from terminal
 
 
-def main(kaggle_path=""):
+def run(kaggle_path=""):
     # Get command line arguments
-    hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE, "kaggle_path": constants.kaggle_path}
+    hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE}
 
     # TODO: Add GPU support. This line of code might be helpful.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -31,7 +31,7 @@ def main(kaggle_path=""):
     print("Kaggle path:", kaggle_path)
 
     # Initalize dataset and model. Then train the model!
-    if not kaggle:
+    if not kaggle_path:
         train_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
         val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
     else:
@@ -53,4 +53,4 @@ def main(kaggle_path=""):
 
 if __name__ == "__main__":
     #test()
-    main()
+    run()
