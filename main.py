@@ -28,6 +28,7 @@ def main(kaggle=False):
     print(device)
     print("Epochs:", constants.EPOCHS)
     print("Batch size:", constants.BATCH_SIZE)
+    print("Kaggle path:", kaggle_path)
 
     # Initalize dataset and model. Then train the model!
     if not kaggle:
