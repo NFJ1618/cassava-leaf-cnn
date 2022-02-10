@@ -49,7 +49,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
             optimizer.zero_grad()
             # Periodically evaluate our model + log to Tensorboard
             
-            if step >= n_eval and step % n_eval == 0:
+            #if step >= n_eval and step % n_eval == 0:
                 # TODO:
                 # Compute training loss and accuracy.
                 # Log the results to Tensorboard.
@@ -62,8 +62,9 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Don't forget to turn off gradient calculations!
                 evaluate(val_loader, model, loss_fn, device)
 
-            step += 1
-            
+            #step += 1  
+        evaluate(val_loader, model, loss_fn, device)
+
 
         print('Epoch:', epoch, 'Loss:', loss.item())
 
