@@ -19,7 +19,7 @@ def test():
         plt.show(block=True) #Allows image to shown even when main called from terminal
 
 
-def main(kaggle=False):
+def main(kaggle_path=""):
     # Get command line arguments
     hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE, "kaggle_path": constants.kaggle_path}
 
@@ -36,8 +36,8 @@ def main(kaggle=False):
         val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
     else:
     #For Kaggle
-        train_dataset = StartingDataset(csv_path=constants.kaggle_path + '/train.csv', folder_path=constants.kaggle_path + '/train_images', img_size=IMG_SIZE)
-        val_dataset = StartingDataset(csv_path=constants.kaggle_path + '/train.csv', folder_path=constants.kaggle_path + '/train_images', img_size=IMG_SIZE)
+        train_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=IMG_SIZE)
+        val_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=IMG_SIZE)
     print("Data in class")
     model = StartingNetwork()
     model = model.to(device)
