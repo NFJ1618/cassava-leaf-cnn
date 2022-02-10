@@ -20,7 +20,7 @@ def test():
         plt.show(block=True) #Allows image to shown even when main called from terminal
 
 
-def main():
+def main(kaggle=False):
     # Get command line arguments
     hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE}
 
@@ -31,14 +31,13 @@ def main():
     print("Batch size:", constants.BATCH_SIZE)
 
     # Initalize dataset and model. Then train the model!
-    #train_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
-    #val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
-
+    if not kaggle:
+        train_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
+        val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
+    else:
     #For Kaggle
-    train_dataset = StartingDataset(csv_path='input/cassava-leaf-disease-classification/train.csv', 
-        folder_path='input/cassava-leaf-disease-classification/train_images', img_size=IMG_SIZE)
-    val_dataset = StartingDataset(csv_path='input/cassava-leaf-disease-classification/train.csv', 
-        folder_path='input/cassava-leaf-disease-classification/train_images', img_size=IMG_SIZE)
+        train_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=IMG_SIZE)
+        val_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=IMG_SIZE)
     print("Data in class")
     model = StartingNetwork()
     model = model.to(device)
@@ -54,4 +53,4 @@ def main():
 
 if __name__ == "__main__":
     #test()
-    main()
+    main(kaggle=True)
