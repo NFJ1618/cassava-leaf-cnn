@@ -1,7 +1,6 @@
 #import os
 
 import constants
-from constants import *
 from data.StartingDataset import StartingDataset
 from networks.StartingNetwork import StartingNetwork
 from train_functions.starting_train import starting_train
@@ -36,8 +35,8 @@ def main(kaggle=False):
         val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
     else:
     #For Kaggle
-        train_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=IMG_SIZE)
-        val_dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=IMG_SIZE)
+        train_dataset = StartingDataset(csv_path=constants.kaggle_path + '/train.csv', folder_path=constants.kaggle_path + '/train_images', img_size=IMG_SIZE)
+        val_dataset = StartingDataset(csv_path=constants.kaggle_path + '/train.csv', folder_path=constants.kaggle_path + '/train_images', img_size=IMG_SIZE)
     print("Data in class")
     model = StartingNetwork()
     model = model.to(device)
