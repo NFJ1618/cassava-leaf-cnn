@@ -24,7 +24,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
     print("Data loaded")
 
     # Initalize optimizer (for gradient descent) and loss function
-    optimizer = optim.Adam(model.parameters())
+    #optimizer = optim.Adam(model.parameters())
+    optimizer = optim.SGD(model.parameters(),lr=0.01)
     loss_fn = nn.CrossEntropyLoss()
 
     #tb_summary = torch.utils.tensorboard.SummaryWriter(summary_path)
