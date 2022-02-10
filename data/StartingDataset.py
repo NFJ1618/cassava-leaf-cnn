@@ -21,6 +21,7 @@ class StartingDataset(Dataset):
         image = Image.open(self.image_ids[index])
         inputs = functional.resize(image, self.img_size)
         inputs = ToTensor()(inputs)
+        image.close()
 
         return inputs, self.labels[index]
 
