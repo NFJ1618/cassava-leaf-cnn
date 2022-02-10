@@ -21,7 +21,7 @@ def test():
 
 def main(kaggle=False):
     # Get command line arguments
-    hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE}
+    hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE, "kaggle_path": constants.kaggle_path}
 
     # TODO: Add GPU support. This line of code might be helpful.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
