@@ -52,7 +52,7 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
             optimizer.zero_grad()
             # Periodically evaluate our model + log to Tensorboard
             
-            if step > n_eval and step % n_eval == 0:
+            #if step > n_eval and step % n_eval == 0:
                 # TODO:
                 # Compute training loss and accuracy.
                 # Log the results to Tensorboard.
@@ -63,9 +63,10 @@ def starting_train(train_dataset, val_dataset, model, hyperparameters, n_eval, d
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
                 # Don't forget to turn off gradient calculations!
-                evaluate(val_loader, model, loss_fn, device)
+                
 
-            step += 1
+            #step += 1
+            evaluate(val_loader, model, loss_fn, device)
 
         print('Epoch:', epoch, 'Loss:', loss.item())
 
@@ -98,7 +99,7 @@ def evaluate(val_loader, model, loss_fn, device):
     total = 0
 
     with torch.no_grad():
-        for batch in val_loader:
+        for batch in tqdm(val_loader):
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
