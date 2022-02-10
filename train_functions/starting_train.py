@@ -100,6 +100,7 @@ def evaluate(val_loader, model, loss_fn, device):
 
     with torch.no_grad():
         for batch in val_loader:
+            print("Evaluating")
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
