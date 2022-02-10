@@ -31,8 +31,14 @@ def main():
     print("Batch size:", constants.BATCH_SIZE)
 
     # Initalize dataset and model. Then train the model!
-    train_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
-    val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
+    #train_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
+    #val_dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=IMG_SIZE)
+
+    #For Kaggle
+    train_dataset = StartingDataset(csv_path='input/cassava-leaf-disease-classification/train.csv', 
+        folder_path='input/cassava-leaf-disease-classification/train_images', img_size=IMG_SIZE)
+    val_dataset = StartingDataset(csv_path='input/cassava-leaf-disease-classification/train.csv', 
+        folder_path='input/cassava-leaf-disease-classification/train_images', img_size=IMG_SIZE)
     print("Data in class")
     model = StartingNetwork()
     model = model.to(device)
