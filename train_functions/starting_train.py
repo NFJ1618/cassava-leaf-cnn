@@ -110,3 +110,4 @@ def evaluate(val_loader, model, loss_fn, device):
             correct += (labels == predictions).int().sum()
             total += len(predictions)
     print('Accuracy:', (correct/total).item())
+    model.train()
