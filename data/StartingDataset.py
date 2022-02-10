@@ -20,8 +20,8 @@ class StartingDataset(Dataset):
         #inputs = torch.zeros([3, 224, 224])
         inputs = 0
         with Image.open(self.image_ids[index]) as image:
-            inputs = ToTensor()(image)
-            inputs = functional.resize(inputs, self.img_size)
+            inputs = functional.resize(image, self.img_size)
+        inputs = ToTensor()(inputs)
 
         return inputs, self.labels[index]
 
