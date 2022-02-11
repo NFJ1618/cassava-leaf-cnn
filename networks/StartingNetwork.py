@@ -23,6 +23,11 @@ class StartingNetwork(torch.nn.Module):
         #test
         self.pool = nn.MaxPool2d(2,2)
 
+        #batch normalization
+        self.bnl1 = nn.BatchNorm1d(256)
+        self.bnl2 = nn.BatchNorm1d(128)
+        self.bnc1 = nn.BatchNorm2d(6)
+        self.bnc2 = nn.BatchNorm2d(12)
 
 
     def forward(self, x):
@@ -32,22 +37,22 @@ class StartingNetwork(torch.nn.Module):
         # return x
 
         #(n, 3, 224, 224)
-        x = self.conv1(x)
+        x = self.bnc1(self.conv1(x))
         x = F.relu(x)
         # (n, 6, 224, 224)
         x = self.pool(x)
         # (n, 6, 112, 112)
-        x = self.conv2(x)
+        x = self.bnc2(self.conv2(x))
         x = F.relu(x)
         # (n, 12, 112, 112)
         x = self.pool(x)
         # (n, 12, 56, 56)
         x = torch.reshape(x, (-1, 12 * 56 * 56))
         # (n, 12 * 56 * 56)
-        x = self.fc1(x)
+        x = self.bnl1(self.fc1(x))
         x = F.relu(x)
         # (n, 6*50*50)
-        x = self.fc2(x)
+        x = self.bnl2(self.fc2(x))
         x = F.relu(x)
         # (n, 128)
         x = self.fc3(x)
