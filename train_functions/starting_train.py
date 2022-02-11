@@ -60,7 +60,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
 
-             
+            step += 1
+
         evaluate(val_loader, model, loss_fn, device)
 
 
