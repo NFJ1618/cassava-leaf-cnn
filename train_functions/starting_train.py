@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.utils import tensorboard
 from tqdm import tqdm
 
 
@@ -27,7 +28,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
     optimizer = optim.Adam(model.parameters())
     loss_fn = nn.CrossEntropyLoss()
 
-    #tb_summary = torch.utils.tensorboard.SummaryWriter(summary_path)
+    tb_summary = tensorboard.SummaryWriter()
 
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
@@ -49,13 +50,10 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
             # Periodically evaluate our model + log to Tensorboard
             
             if step >= n_eval and step % n_eval == 0:
-                print('Step: ', step, ', Training Loss:', loss.item())
-
-
                 # TODO:
                 # Compute training loss and accuracy.
                 # Log thxe results to Tensorboard.
-                # tb_summary.add_scalar('Loss (Training)', loss, epoch)
+                tb_summary.add_scalar('Loss (Training)', loss.item(), epoch)
                 # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
                 # TODO:
