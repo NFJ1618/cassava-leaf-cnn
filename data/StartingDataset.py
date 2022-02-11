@@ -11,15 +11,19 @@ class StartingDataset(Dataset):
     """
     Load on demand style dataset that will also do image transformations for required dimensions each time
     """
-    def __init__(self, csv_path, folder_path, img_size):
+    def __init__(self, csv_path, folder_path, img_size, transform=None, data_ratio=1.0):
         df = pd.read_csv(csv_path)
-        df = df[:500]
+        
+        # added for quick test runs.
+        df = df[:int(data_ratio * df.shape[0])]
+
         self.img_size = img_size
         self.image_ids = list(df['image_id'])
         for i,id in enumerate(self.image_ids):
             self.image_ids[i] = folder_path + '/' + id
         self.labels = list(df["label"])
         self.l = len(self.labels)
+        self.transform = transform
 
     def __getitem__(self, index):
         #inputs = torch.zeros([3, 224, 224])
@@ -28,6 +32,8 @@ class StartingDataset(Dataset):
             inputs = functional.resize(image, self.img_size)
 
         inputs = ToTensor()(inputs)
+        if self.transform:
+            inputs = self.transform(inputs)
         
         return inputs, self.labels[index]
 

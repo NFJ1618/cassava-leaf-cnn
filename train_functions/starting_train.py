@@ -24,19 +24,17 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
     print("Data loaded")
 
     # Initalize optimizer (for gradient descent) and loss function
-    #optimizer = optim.Adam(model.parameters())
-    optimizer = optim.SGD(model.parameters(),lr=0.01)
+    optimizer = optim.Adam(model.parameters())
     loss_fn = nn.CrossEntropyLoss()
 
     #tb_summary = torch.utils.tensorboard.SummaryWriter(summary_path)
 
-    step = 0
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
 
         # Loop over each batch in the dataset
+        step = 0
         for batch in tqdm(train_loader):
-            # TODO: Backpropagation and gradient descent
             model.train()
             images, labels = batch
             images = images.to(device)
@@ -47,26 +45,25 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
             # Periodically evaluate our model + log to Tensorboard
             
-            #if step >= n_eval and step % n_eval == 0:
+            if step >= n_eval and step % n_eval == 0:
+                print('Step: ', step, ', Training Loss:', loss.item())
+
+
                 # TODO:
                 # Compute training loss and accuracy.
-                # Log the results to Tensorboard.
+                # Log thxe results to Tensorboard.
                 # tb_summary.add_scalar('Loss (Training)', loss, epoch)
                 # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
                 # TODO:
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
-                # Don't forget to turn off gradient calculations!
-                #evaluate(val_loader, model, loss_fn, device)
 
-            #step += 1  
+             
         evaluate(val_loader, model, loss_fn, device)
-
-
-        print('Epoch:', epoch, 'Loss:', loss.item())
 
 
 def compute_accuracy(outputs, labels):
@@ -93,19 +90,19 @@ def evaluate(val_loader, model, loss_fn, device):
     TODO!
     """
     model.eval()
-    correct = 0
-    total = 0
+    correct, val_loss = 0, 0
+    total = len(val_loader.dataset)
 
     with torch.no_grad():
-        for batch in val_loader:
-            images, labels = batch
+        for images, labels in val_loader:
             images = images.to(device)
             labels = labels.to(device)
 
             images = torch.reshape(images, (-1, 3, 224, 224))
             output = model(images)
             predictions = torch.argmax(output, dim = 1)
+            correct += (labels == predictions).int().sum().item()
+            val_loss += loss_fn(output, labels).item()
 
-            correct += (labels == predictions).int().sum()
-            total += len(predictions)
-    print('Accuracy:', (correct/total).item())
+    print('Validation Accuracy:', (correct/total))
+    print('Validation Loss: ', val_loss/len(val_loader))
