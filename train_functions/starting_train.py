@@ -33,8 +33,9 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
 
-        # Loop over each batch in the dataset
         step = 0
+        total_loss = 0
+        # Loop over each batch in the dataset
         for batch in tqdm(train_loader):
             model.train()
             images, labels = batch
@@ -47,6 +48,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
             loss.backward()
             optimizer.step()
 
+            total_loss += loss.item()
+            step += 1
             # Periodically evaluate our model + log to Tensorboard
             
             if step >= n_eval and step % n_eval == 0:
@@ -54,16 +57,14 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Compute training loss and accuracy.
                 # Log thxe results to Tensorboard.
                 tb_summary.add_scalar('Loss (Training)', loss.item(), epoch)
-                print('Training Loss: ', loss.item())
+                print('Training Loss: ', total_loss/step)
                 # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
                 # TODO:
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
 
-            step += 1
-
-        print('Training Loss: ', loss.item())
+        print('Training Loss: ', total_loss/step)
         evaluate(val_loader, model, loss_fn, device)
 
 
