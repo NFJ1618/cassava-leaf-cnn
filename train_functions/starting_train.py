@@ -63,6 +63,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
 
             step += 1
 
+        print('Training Loss: ', loss.item())
         evaluate(val_loader, model, loss_fn, device)
 
 
