@@ -13,6 +13,7 @@ class StartingDataset(Dataset):
     """
     def __init__(self, csv_path, folder_path, img_size):
         df = pd.read_csv(csv_path)
+        df = df[:500]
         self.img_size = img_size
         self.image_ids = list(df['image_id'])
         for i,id in enumerate(self.image_ids):
@@ -25,8 +26,9 @@ class StartingDataset(Dataset):
         inputs = 0
         with Image.open(self.image_ids[index]) as image:
             inputs = functional.resize(image, self.img_size)
-        inputs = ToTensor()(inputs)
 
+        inputs = ToTensor()(inputs)
+        
         return inputs, self.labels[index]
 
     def __len__(self): #Assumes size of class doesn't change
