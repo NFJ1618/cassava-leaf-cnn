@@ -29,6 +29,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
     loss_fn = nn.CrossEntropyLoss()
 
     tb_summary = tensorboard.SummaryWriter()
+    loss_arr = []
+    accuracy_arr = []
 
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
@@ -64,25 +66,30 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
 
-        print('Training Loss: ', total_loss/len(train_loader))
-        evaluate(val_loader, model, loss_fn, device)
+        avg_loss = total_loss/len(train_loader)
+        loss_arr.append(avg_loss)
+        print('Training Loss: ', avg_loss)
+        accuracy = evaluate(val_loader, model, loss_fn, device)
+        accuracy_arr.append(accuracy)
+    
+    return loss_arr, accuracy_arr
 
 
-def compute_accuracy(outputs, labels):
-    """
-    Computes the accuracy of a model's predictions.
-
-    Example input:
-        outputs: [0.7, 0.9, 0.3, 0.2]
-        labels:  [1, 1, 0, 1]
-
-    Example output:
-        0.75
-    """
-
-    n_correct = (torch.round(outputs) == labels).sum().item()
-    n_total = len(outputs)
-    return n_correct / n_total
+# def compute_accuracy(outputs, labels):
+#    """
+#    Computes the accuracy of a model's predictions.
+#
+#    Example input:
+#        outputs: [0.7, 0.9, 0.3, 0.2]
+#        labels:  [1, 1, 0, 1]
+#
+#    Example output:
+#        0.75
+#    """
+#
+#    n_correct = (torch.round(outputs) == labels).sum().item()
+#    n_total = len(outputs)
+#    return n_correct / n_total
 
 
 def evaluate(val_loader, model, loss_fn, device):
@@ -108,3 +115,5 @@ def evaluate(val_loader, model, loss_fn, device):
 
     print('Validation Accuracy:', (correct/total))
     print('Validation Loss: ', val_loss/len(val_loader))
+
+    return correct/total

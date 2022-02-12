@@ -41,13 +41,16 @@ def run(kaggle_path=""):
     print("Data in class")
     model = StartingNetwork()
     model = model.to(device)
-    starting_train(
+    loss_arr, accuracy_arr = starting_train(
         dataset=dataset,
         model=model,
         hyperparameters=hyperparameters,
         n_eval=constants.N_EVAL,
         device = device
     )
+
+    plt.plot(range(len(loss_arr)), loss_arr)
+    plt.plot(range(len(accuracy_arr)), accuracy_arr)
 
 
 if __name__ == "__main__":
