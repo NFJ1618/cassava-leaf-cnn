@@ -36,7 +36,7 @@ class StartingDataset(Dataset):
             inputs = transforms.functional.resize(image, self.img_size)
 
         inputs = transforms.ToTensor()(inputs)
-        inputs = self.transform(inputs)
+        # inputs = self.transform(inputs)
 
         
         return inputs, self.labels[index]
