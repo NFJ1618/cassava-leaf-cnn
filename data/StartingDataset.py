@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 import pandas as pd
 from PIL import Image
-from torchvision.transforms import ToTensor, functional
+from torchvision import transforms
 from random import randint
 from torch.utils.data import DataLoader, Subset
 from sklearn.model_selection import train_test_split
@@ -20,17 +20,23 @@ class StartingDataset(Dataset):
             self.image_ids[i] = folder_path + '/' + id
         self.labels = list(df["label"])
         self.l = len(self.labels)
-        self.transform = transform
+
+        #transform handler
+        if transform == None:
+            self.transform = transforms.Compose(
+                transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+            )
+        else:
+            self.transform = transform
 
     def __getitem__(self, index):
         #inputs = torch.zeros([3, 224, 224])
         inputs = 0
         with Image.open(self.image_ids[index]) as image:
-            inputs = functional.resize(image, self.img_size)
+            inputs = transforms.functional.resize(image, self.img_size)
 
-        inputs = ToTensor()(inputs)
-        if self.transform:
-            inputs = self.transform(inputs)
+        inputs = transforms.ToTensor()(inputs)
+        inputs = self.transform(inputs)
         
         return inputs, self.labels[index]
 
