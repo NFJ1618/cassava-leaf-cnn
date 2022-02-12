@@ -57,14 +57,14 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Compute training loss and accuracy.
                 # Log thxe results to Tensorboard.
                 tb_summary.add_scalar('Loss (Training)', loss.item(), epoch)
-                print('Training Loss: ', total_loss/step)
+                print('Training Loss: ', total_loss/(step * 32))
                 # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
                 # TODO:
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
 
-        print('Training Loss: ', total_loss/step)
+        print('Training Loss: ', total_loss/len(train_loader))
         evaluate(val_loader, model, loss_fn, device)
 
 

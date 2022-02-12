@@ -14,9 +14,7 @@ class StartingDataset(Dataset):
     def __init__(self, csv_path, folder_path, img_size, transform=None, data_ratio=1.0):
         df = pd.read_csv(csv_path)
         
-        # added for quick test runs.
-        df = df[:int(data_ratio * df.shape[0])]
-
+        self.data_ratio = data_ratio
         self.img_size = img_size
         self.image_ids = list(df['image_id'])
         for i,id in enumerate(self.image_ids):
@@ -51,6 +49,10 @@ class StartingDataset(Dataset):
             test_size=ratio,
             random_state=SEED
         )
+
+        # added for quick test runs.
+        train_indices = train_indices[:int(self.data_ratio * len(train_indices))]
+        train_indices = train_indices[:int(self.data_ratio * len(test_indices))]
 
         # generate subset based on indices
         train_split = Subset(dataset, train_indices)
