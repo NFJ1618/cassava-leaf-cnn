@@ -21,11 +21,11 @@ class StartingDataset(Dataset):
         self.labels = list(df["label"])
         self.l = len(self.labels)
 
-        #transform handler
+        # transform handler
         if transform == None:
-            self.transform = transforms.Compose(
+            self.transform = transforms.Compose([
                 transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-            )
+            ])
         else:
             self.transform = transform
 
@@ -37,6 +37,7 @@ class StartingDataset(Dataset):
 
         inputs = transforms.ToTensor()(inputs)
         inputs = self.transform(inputs)
+
         
         return inputs, self.labels[index]
 
