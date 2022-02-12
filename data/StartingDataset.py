@@ -13,7 +13,6 @@ class StartingDataset(Dataset):
     """
     def __init__(self, csv_path, folder_path, img_size, transform=None, data_ratio=1.0):
         df = pd.read_csv(csv_path)
-        
         self.data_ratio = data_ratio
         self.img_size = img_size
         self.image_ids = list(df['image_id'])
@@ -52,11 +51,13 @@ class StartingDataset(Dataset):
 
         # added for quick test runs.
         train_indices = train_indices[:int(self.data_ratio * len(train_indices))]
-        train_indices = train_indices[:int(self.data_ratio * len(test_indices))]
+        test_indices = test_indices[:int(self.data_ratio * len(test_indices))]
 
         # generate subset based on indices
+        print(len(dataset))
         train_split = Subset(dataset, train_indices)
         test_split = Subset(dataset, test_indices)
+        print(len(train_split))
 
         # create batches
         train_loader = DataLoader(train_split, batch_size=batch_size, shuffle=True)
