@@ -41,7 +41,7 @@ def run(kaggle_path=""):
     print("Data in class")
     model = StartingNetwork()
     model = model.to(device)
-    loss_arr, accuracy_arr = starting_train(
+    loss_arr, train_accuracy_arr, val_accuracy_arr  = starting_train(
         dataset=dataset,
         model=model,
         hyperparameters=hyperparameters,
@@ -50,7 +50,8 @@ def run(kaggle_path=""):
     )
 
     plt.plot(range(len(loss_arr)), loss_arr)
-    plt.plot(range(len(accuracy_arr)), accuracy_arr)
+    plt.plot(range(len(train_accuracy_arr)), train_accuracy_arr)
+    plt.plot(range(len(val_accuracy_arr)), val_accuracy_arr)
 
 
 if __name__ == "__main__":
