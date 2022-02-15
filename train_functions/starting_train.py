@@ -127,7 +127,7 @@ def evaluate(val_loader, model, loss_fn, device):
 
 def evaluate_train(train_loader, model, loss_fn, device):
     """
-    Computes the loss and accuracy of a model on the validation dataset.
+    Computes the loss and accuracy of a model on the train dataset.
 
     TODO!
     """
