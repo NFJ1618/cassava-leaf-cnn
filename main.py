@@ -32,7 +32,7 @@ def run(kaggle_path=""):
 
     # Initalize dataset and model. Then train the model!
     if not kaggle_path:
-        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE)
+        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE, data_ratio=1.0)
     else:
     #For Kaggle
         dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=constants.IMG_SIZE)

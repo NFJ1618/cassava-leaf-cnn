@@ -32,6 +32,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
     loss_arr = []
     accuracy_arr = []
 
+    evaluate(val_loader, model, loss_fn, device)
+
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
 
