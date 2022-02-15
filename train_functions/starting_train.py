@@ -69,7 +69,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
 
-        if epoch+1 >= 5 and epoch % 5 == 0:
+        if epoch+1 >= 5 and (epoch+1) % 5 == 0:
             evaluate_train(train_loader, model, loss_fn, device)
 
         avg_loss = total_loss/(step*32)

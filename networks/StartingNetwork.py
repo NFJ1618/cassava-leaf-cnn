@@ -12,9 +12,10 @@ class StartingNetwork(torch.nn.Module):
         super().__init__()
         # self.flatten = nn.Flatten()
 
-        self.fc1 = nn.Linear(256*5*5, 500)
-        self.fc2 = nn.Linear(500, 100)
-        self.fc3 = nn.Linear(100,5)
+        self.fc1 = nn.Linear(256*5*5, 4000)
+        self.fc2 = nn.Linear(4000, 4000)
+        self.fc3 = nn.Linear(4000, 100)
+        self.fc4 = nn.Linear(100,5)
         # self.sigmoid = nn.Sigmoid()
 
         self.conv1 = nn.Conv2d(3,96, kernel_size=16,stride=4)
@@ -30,13 +31,19 @@ class StartingNetwork(torch.nn.Module):
         self.pool3 = nn.MaxPool2d(3,2)
 
         #batch normalization
-        self.bnl1 = nn.BatchNorm1d(500)
-        self.bnl2 = nn.BatchNorm1d(100)
+        self.bnl1 = nn.BatchNorm1d(4000)
+        self.bnl2 = nn.BatchNorm1d(4000)
         self.bnc1 = nn.BatchNorm2d(96)
         self.bnc2 = nn.BatchNorm2d(256)
         self.bnc3 = nn.BatchNorm2d(256)
         self.bnc4 = nn.BatchNorm2d(256)
         self.bnc5 = nn.BatchNorm2d(256)
+
+        #dropout
+        #self.drop1 = nn.Dropout(p=0.5)
+        self.drop2 = nn.Dropout(p=0.5)
+        self.drop3 = nn.Dropout(p=0.5)
+        self.drop4 = nn.Dropout(p=0.8)
 
 
     def forward(self, x):
@@ -78,16 +85,22 @@ class StartingNetwork(torch.nn.Module):
         x = torch.reshape(x, (-1, 256*5*5))
         #print(x.shape)
         # (n, 256*5*5)
+        #x = self.drop1(x)
         x = self.bnl1(self.fc1(x))
         x = F.relu(x)
         #print(x.shape)
-        # (n, 500)
+        # (n, 4000)
+        x = self.drop2(x)
         x = self.bnl2(self.fc2(x))
         x = F.relu(x)
         #print(x.shape)
-        # (n, 100)
+        # (n, 4000)
+        x = self.drop3(x)
         x = self.fc3(x)
         #print(x.shape)
+        # (n, 100)
+        x = self.drop4(x)
+        x = self.fc4(x)
         # (n, 5)
         return x
 
