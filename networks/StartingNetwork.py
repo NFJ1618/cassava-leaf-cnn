@@ -56,7 +56,7 @@ class StartingNetwork(torch.nn.Module):
         # (n, 256, 12, 12)
         x = self.pool2(x)
         # (n, 256, 4, 4)
-        x = torch.reshape(x, (-1, 256*12*12))
+        x = torch.reshape(x, (-1, 256*4*4))
         # (n, 256*4*4)
         x = self.bnl1(self.fc1(x))
         x = F.relu(x)
