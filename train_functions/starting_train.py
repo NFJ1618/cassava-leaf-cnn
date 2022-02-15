@@ -69,6 +69,9 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
 
+        if epoch >= 5 and epoch % 5 == 0:
+            evaluate_train(train_loader, model, loss_fn, device)
+
         avg_loss = total_loss/(step*32)
         loss_arr.append(avg_loss)
         print('Training Loss: ', avg_loss)
@@ -119,5 +122,31 @@ def evaluate(val_loader, model, loss_fn, device):
 
     print('Validation Accuracy:', (correct/total))
     print('Validation Loss: ', val_loss/len(val_loader))
+
+    return correct/total
+
+def evaluate_train(train_loader, model, loss_fn, device):
+    """
+    Computes the loss and accuracy of a model on the validation dataset.
+
+    TODO!
+    """
+    model.eval()
+    correct, train_loss = 0, 0
+    total = len(train_loader.dataset)
+
+    with torch.no_grad():
+        for images, labels in train_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+
+            images = torch.reshape(images, (-1, 3, 224, 224))
+            output = model(images)
+            predictions = torch.argmax(output, dim = 1)
+            correct += (labels == predictions).int().sum().item()
+            train_loss += loss_fn(output, labels).item()
+
+    print('Evaluate Training Accuracy:', (correct/total))
+    print('Evaluate Training Loss: ', train_loss/len(train_loader))
 
     return correct/total

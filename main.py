@@ -11,7 +11,7 @@ def test():
     """
     Function to test StartingDataset tensors and image display
     """
-    dataset = StartingDataset(csv_path='data/sample_submission_2.csv', folder_path='data/train_images', img_size=IMG_SIZE)
+    dataset = StartingDataset(csv_path='data/sample_submission_2.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE)
     for i in range(len(dataset)):
         image, label = dataset[i]
         plt.imshow(image.permute(1,2,0)) #3rd RBG dimension being first confuses imshow
@@ -32,7 +32,7 @@ def run(kaggle_path=""):
 
     # Initalize dataset and model. Then train the model!
     if not kaggle_path:
-        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE, data_ratio=1.0)
+        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE, data_ratio=constants.DATA_RATIO)
     else:
     #For Kaggle
         dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=constants.IMG_SIZE)
