@@ -30,7 +30,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
 
     tb_summary = tensorboard.SummaryWriter()
     loss_arr = []
-    accuracy_arr = []
+    train_accuracy_arr = []
+    val_accuracy_arr = []
 
     evaluate(val_loader, model, loss_fn, device)
 
@@ -62,7 +63,6 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Log thxe results to Tensorboard.
                 tb_summary.add_scalar('Loss (Training)', loss.item(), epoch)
                 print('Training Loss: ', total_loss/(step*32))
-                print('Total Loss: ', total_loss)
                 # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
                 # TODO:
@@ -73,13 +73,12 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
             evaluate_train(train_loader, model, loss_fn, device)
 
         avg_loss = total_loss/(step*32)
-        loss_arr.append(avg_loss)
         print('Training Loss: ', avg_loss)
-        print('Total Loss: ', total_loss)
-        accuracy = evaluate(val_loader, model, loss_fn, device)
-        accuracy_arr.append(accuracy)
+        loss_arr.append(avg_loss)
+        train_accuracy_arr.append(evaluate_train(train_loader, model, loss_fn, device))
+        val_accuracy_arr.append(evaluate(val_loader, model, loss_fn, device))
     
-    return loss_arr, accuracy_arr
+    return loss_arr, train_accuracy_arr, val_accuracy_arr
 
 
 # def compute_accuracy(outputs, labels):
@@ -132,7 +131,7 @@ def evaluate_train(train_loader, model, loss_fn, device):
     TODO!
     """
     model.eval()
-    correct, train_loss = 0, 0
+    correct = 0
     total = len(train_loader.dataset)
 
     with torch.no_grad():
@@ -144,9 +143,9 @@ def evaluate_train(train_loader, model, loss_fn, device):
             output = model(images)
             predictions = torch.argmax(output, dim = 1)
             correct += (labels == predictions).int().sum().item()
-            train_loss += loss_fn(output, labels).item()
+            #train_loss += loss_fn(output, labels).item()
 
     print('Evaluate Training Accuracy:', (correct/total))
-    print('Evaluate Training Loss: ', train_loss/len(train_loader))
+    #print('Evaluate Training Loss: ', train_loss/len(train_loader))
 
     return correct/total
