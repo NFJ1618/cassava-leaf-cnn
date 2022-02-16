@@ -85,9 +85,8 @@ class StartingNetwork(torch.nn.Module):
 
         with torch.no_grad():
             x = self.prebase(x)
-
-        x = torch.reshape(x, (-1, 384*6*6))
         print(x.shape)
+        x = torch.reshape(x, (-1, 384*6*6))
         # (n, 384*6*6)
         #x = self.drop1(x)
         x = self.bnl1(self.fc1(x))
