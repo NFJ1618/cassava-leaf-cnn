@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils import tensorboard
 from tqdm import tqdm
+from constants import IMG_SIZE
 
 
 def starting_train(dataset, model, hyperparameters, n_eval, device):
@@ -62,19 +63,22 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
                 # Compute training loss and accuracy.
                 # Log thxe results to Tensorboard.
                 tb_summary.add_scalar('Loss (Training)', loss.item(), epoch)
-                print('Training Loss: ', total_loss/(step*32))
+                #print('Training Loss: ', total_loss/(step*32))
                 # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
                 # TODO:
                 # Compute validation loss and accuracy.
                 # Log the results to Tensorboard.
 
+        #if epoch+1 >= 5 and (epoch+1) % 5 == 0:
+        #    evaluate_train(train_loader, model, loss_fn, device)
 
         avg_loss = total_loss/(step*32)
         print('Training Loss: ', avg_loss)
         loss_arr.append(avg_loss)
         train_accuracy_arr.append(evaluate_train(train_loader, model, loss_fn, device))
         val_accuracy_arr.append(evaluate(val_loader, model, loss_fn, device))
+        print("Test accuracy: ", val_accuracy_arr[-1], " Train accuracy: ", train_accuracy_arr[-1], " Loss: ", loss_arr[-1])
     
     return loss_arr, train_accuracy_arr, val_accuracy_arr
 
@@ -111,7 +115,7 @@ def evaluate(val_loader, model, loss_fn, device):
             images = images.to(device)
             labels = labels.to(device)
 
-            images = torch.reshape(images, (-1, 3, 224, 224))
+            images = torch.reshape(images, (-1, 3, IMG_SIZE[0], IMG_SIZE[1]))
             output = model(images)
             predictions = torch.argmax(output, dim = 1)
             correct += (labels == predictions).int().sum().item()
@@ -137,7 +141,7 @@ def evaluate_train(train_loader, model, loss_fn, device):
             images = images.to(device)
             labels = labels.to(device)
 
-            images = torch.reshape(images, (-1, 3, 224, 224))
+            images = torch.reshape(images, (-1, 3, IMG_SIZE[0], IMG_SIZE[1]))
             output = model(images)
             predictions = torch.argmax(output, dim = 1)
             correct += (labels == predictions).int().sum().item()
