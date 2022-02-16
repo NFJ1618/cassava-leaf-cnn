@@ -16,9 +16,13 @@ class StartingNetwork(torch.nn.Module):
         self.prebase = models.resnet18(pretrained=True)
 
         # self.fc1 = nn.Linear(384*6*6, 4000)
-        self.fc1 = nn.Linear(32000, 4000)
-        self.fc2 = nn.Linear(4000, 4000)
-        self.fc3 = nn.Linear(4000, 100)
+        # self.fc2 = nn.Linear(4000, 4000)
+        # self.fc3 = nn.Linear(4000, 100)
+        # self.fc4 = nn.Linear(100,5)
+
+        self.fc1 = nn.Linear(1000, 1000)
+        self.fc2 = nn.Linear(1000, 1000)
+        self.fc3 = nn.Linear(1000, 100)
         self.fc4 = nn.Linear(100,5)
         # self.sigmoid = nn.Sigmoid()
 
