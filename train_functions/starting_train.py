@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils import tensorboard
 from tqdm import tqdm
-import matplotlib.pyplot as plt
 from constants import IMG_SIZE
 
 
@@ -79,10 +78,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
         loss_arr.append(avg_loss)
         train_accuracy_arr.append(evaluate_train(train_loader, model, loss_fn, device))
         val_accuracy_arr.append(evaluate(val_loader, model, loss_fn, device))
-        plt.plot(train_accuracy_arr)
-        plt.plot(val_accuracy_arr)
-        plt.plot(loss_arr)
-        plt.show()
+        print("Test accuracy: ", val_accuracy_arr[-1], " Train accuracy: ", train_accuracy_arr[-1], " Loss: ", loss_arr[-1])
     
     return loss_arr, train_accuracy_arr, val_accuracy_arr
 
