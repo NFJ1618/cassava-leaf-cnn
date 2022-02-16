@@ -15,7 +15,8 @@ class StartingNetwork(torch.nn.Module):
 
         self.prebase = models.resnet18(pretrained=True)
 
-        self.fc1 = nn.Linear(384*6*6, 4000)
+        # self.fc1 = nn.Linear(384*6*6, 4000)
+        self.fc1 = nn.Linear(32000, 4000)
         self.fc2 = nn.Linear(4000, 4000)
         self.fc3 = nn.Linear(4000, 100)
         self.fc4 = nn.Linear(100,5)
@@ -85,10 +86,9 @@ class StartingNetwork(torch.nn.Module):
 
         with torch.no_grad():
             x = self.prebase(x)
-        print(x.shape)
-        x = torch.reshape(x, (-1, 384*6*6))
+        # x = torch.reshape(x, (-1, 384*6*6))
         # (n, 384*6*6)
-        #x = self.drop1(x)
+        # x = self.drop1(x)
         x = self.bnl1(self.fc1(x))
         x = F.relu(x)
         #print(x.shape)
