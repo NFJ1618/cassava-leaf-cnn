@@ -39,8 +39,12 @@ class StartingNetwork(torch.nn.Module):
         self.pool3 = nn.MaxPool2d(3,2)
 
         #batch normalization
-        self.bnl1 = nn.BatchNorm1d(4000)
-        self.bnl2 = nn.BatchNorm1d(4000)
+        # self.bnl1 = nn.BatchNorm1d(4000)
+        # self.bnl2 = nn.BatchNorm1d(4000)
+
+        self.bnl1 = nn.BatchNorm1d(1000)
+        self.bnl2 = nn.BatchNorm1d(1000)
+
         self.bnc1 = nn.BatchNorm2d(96)
         self.bnc2 = nn.BatchNorm2d(256)
         self.bnc3 = nn.BatchNorm2d(384)
