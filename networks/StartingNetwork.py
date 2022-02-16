@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torchvision.models as models
 
 
 class StartingNetwork(torch.nn.Module):
@@ -11,6 +12,8 @@ class StartingNetwork(torch.nn.Module):
     def __init__(self):
         super().__init__()
         # self.flatten = nn.Flatten()
+
+        self.prebase = models.resnet18(pretrained=True)
 
         self.fc1 = nn.Linear(256*5*5, 500)
         self.fc2 = nn.Linear(500, 100)
@@ -40,41 +43,47 @@ class StartingNetwork(torch.nn.Module):
 
 
     def forward(self, x):
-        # x = self.flatten(x)
-        # x = self.fc(x)
-        # x = self.sigmoid(x)
-        # return x
-        #print(x.shape)
-        #(n, 3, 224, 224)
-        x = self.bnc1(self.conv1(x))
-        x = F.relu(x)
-        #print(x.shape)
-        # (n, 96, 53, 53)
-        x = self.pool1(x)
-        #print(x.shape)
-        # (n, 96, 26, 26)
-        x = self.bnc2(self.conv2(x))
-        x = F.relu(x)
-        #print(x.shape)
-        # (n, 256, 25, 25)
-        x = self.pool2(x)
-        #print(x.shape)
-        # (n, 256, 12, 12)
-        x = self.bnc3(self.conv3(x))
-        x = F.relu(x)
-        #print(x.shape)
-        # (n, 256, 12, 12)
-        x = self.bnc4(self.conv4(x))
-        x = F.relu(x)
-        #print(x.shape)
-        # (n, 256, 12, 12)
-        x = self.bnc5(self.conv5(x))
-        x = F.relu(x)
-        #print(x.shape)
-        # (n, 256, 12, 12)
-        x = self.pool3(x)
-        #print(x.shape)
-        # (n, 256, 5, 5)
+
+        ### CONVOLUTIONAL LAYERS ###
+
+        # #(n, 3, 224, 224)
+        # x = self.bnc1(self.conv1(x))
+        # x = F.relu(x)
+        # #print(x.shape)
+        # # (n, 96, 53, 53)
+        # x = self.pool1(x)
+        # #print(x.shape)
+        # # (n, 96, 26, 26)
+        # x = self.bnc2(self.conv2(x))
+        # x = F.relu(x)
+        # #print(x.shape)
+        # # (n, 256, 25, 25)
+        # x = self.pool2(x)
+        # #print(x.shape)
+        # # (n, 256, 12, 12)
+        # x = self.bnc3(self.conv3(x))
+        # x = F.relu(x)
+        # #print(x.shape)
+        # # (n, 256, 12, 12)
+        # x = self.bnc4(self.conv4(x))
+        # x = F.relu(x)
+        # #print(x.shape)
+        # # (n, 256, 12, 12)
+        # x = self.bnc5(self.conv5(x))
+        # x = F.relu(x)
+        # #print(x.shape)
+        # # (n, 256, 12, 12)
+        # x = self.pool3(x)
+        # #print(x.shape)
+        # # (n, 256, 5, 5)
+
+        ### PRETRAINED BASE ###
+        with torch.no_grad():
+            x = self.prebase(x)
+
+
+        ### FULLY CONNECTED LAYERS ###
+
         x = torch.reshape(x, (-1, 256*5*5))
         #print(x.shape)
         # (n, 256*5*5)
