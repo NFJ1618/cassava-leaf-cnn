@@ -28,7 +28,7 @@ class PretrainedNetwork(torch.nn.Module):
         self.pool3 = nn.MaxPool2d(3,2)
 
         self.bnl1 = nn.BatchNorm1d(1000)
-        self.bnl2 = nn.BatchNorm1d(1000)
+        self.bnl2 = nn.BatchNorm1d(500)
 
         #dropout
         #self.drop1 = nn.Dropout(p=0.5)
