@@ -3,6 +3,7 @@
 import constants
 from data.StartingDataset import StartingDataset
 from networks.StartingNetwork import StartingNetwork
+from networks.PretrainedNetwork import PretrainedNetwork
 from train_functions.starting_train import starting_train
 import torch
 import matplotlib.pyplot as plt
@@ -19,7 +20,7 @@ def test():
         plt.show(block=True) #Allows image to shown even when main called from terminal
 
 
-def run(kaggle_path=""):
+def run(kaggle_path="", pretrained=False):
     # Get command line arguments
     hyperparameters = {"epochs": constants.EPOCHS, "batch_size": constants.BATCH_SIZE, "test_ratio": constants.TEST_RATIO}
 
@@ -36,10 +37,14 @@ def run(kaggle_path=""):
     else:
     #For Kaggle
         dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=constants.IMG_SIZE)
-
     
     print("Data in class")
-    model = StartingNetwork()
+
+    if pretrained:
+        model = PretrainedNetwork()
+    else:
+        model = StartingNetwork()
+
     model = model.to(device)
     loss_arr, train_accuracy_arr, val_accuracy_arr  = starting_train(
         dataset=dataset,
@@ -56,4 +61,4 @@ def run(kaggle_path=""):
 
 if __name__ == "__main__":
     #test()
-    run()
+    run(pretrained=False)
