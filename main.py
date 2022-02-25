@@ -33,18 +33,21 @@ def run(kaggle_path="", pretrained=False):
 
     # Initalize dataset and model. Then train the model!
 
+    transform = None
+
     if pretrained:
         model = PretrainedNetwork()
         img_size = constants.IMG_SIZE[0]
+        transform = True
     else:
         model = StartingNetwork()
         img_size = constants.IMG_SIZE[1]
 
     if not kaggle_path:
-        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=img_size, data_ratio=constants.DATA_RATIO)
+        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=img_size, data_ratio=constants.DATA_RATIO, transform=transform)
     else:
     #For Kaggle
-        dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=img_size, data_ratio=constants.DATA_RATIO)
+        dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=img_size, data_ratio=constants.DATA_RATIO, transform=transform)
     
     print("Data in class")
 

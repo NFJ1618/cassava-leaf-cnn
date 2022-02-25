@@ -44,7 +44,7 @@ class StartingDataset(Dataset):
             ])
             """
             self.transform = transforms.Compose([
-                transforms.RandomCrop(self.img_size[0], padding=self.img_size[0]/8),
+                transforms.RandomCrop(self.img_size[0], padding=28),
                 transforms.RandomHorizontalFlip(),
                 transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
             ])
