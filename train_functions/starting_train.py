@@ -34,7 +34,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device, img_size):
     train_accuracy_arr = []
     val_accuracy_arr = []
 
-    evaluate(val_loader, model, loss_fn, device, img_size)
+    train_accuracy_arr.append(evaluate_train(train_loader, model, loss_fn, device, img_size))
+    val_accuracy_arr.append(evaluate(val_loader, model, loss_fn, device, img_size))
 
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")

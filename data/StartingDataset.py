@@ -6,6 +6,7 @@ from random import randint
 from torch.utils.data import DataLoader, Subset
 from constants import IMG_SIZE
 from sklearn.model_selection import train_test_split
+import torch
 
 
 class StartingDataset(Dataset):
@@ -29,11 +30,22 @@ class StartingDataset(Dataset):
                 transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
             ])
         else:
+            """
+            ColorJitter = transforms.RandomApply(torch.nn.ModuleList([
+                transforms.ColorJitter(),
+                ]), p=0.3)
+            Crop = transforms.RandA
             self.transform = transforms.Compose([
                 # Normalise has magic numbers from dataset_stats.py
                 transforms.RandomHorizontalFlip(p=0.25),
                 transforms.ColorJitter(p=0.25),
                 transforms.RandomCrop(p = 0.25, size = IMG_SIZE),
+                transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+            ])
+            """
+            self.transform = transforms.Compose([
+                transforms.RandomCrop(self.img_size[0], padding=self.img_size[0]/8),
+                transforms.RandomHorizontalFlip(),
                 transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
             ])
         
