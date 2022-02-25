@@ -14,6 +14,7 @@ class StartingDataset(Dataset):
     """
     def __init__(self, csv_path, folder_path, img_size, transform=None, data_ratio=1.0):
         df = pd.read_csv(csv_path)
+        print(df['label'].value_counts())
         self.data_ratio = data_ratio
         self.img_size = img_size
         self.image_ids = list(df['image_id'])
@@ -26,6 +27,7 @@ class StartingDataset(Dataset):
         if not transform:
             self.transform = transforms.Compose([
                 transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+                #
             ])
         else:
             self.transform = transforms.Compose([

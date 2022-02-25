@@ -14,24 +14,13 @@ class PretrainedNetwork(torch.nn.Module):
         # self.flatten = nn.Flatten()
 
         self.prebase = models.resnet18(pretrained=True)
+        self.prebase = torch.nn.Sequential(*(list(self.prebase.children())[:-1]))
 
         self.fc1 = nn.Linear(1000, 1000)
         self.fc2 = nn.Linear(1000, 1000)
         self.fc3 = nn.Linear(1000, 100)
         self.fc4 = nn.Linear(100,5)
         # self.sigmoid = nn.Sigmoid()
-
-        #test
-
-        self.bnl1 = nn.BatchNorm1d(1000)
-        self.bnl2 = nn.BatchNorm1d(1000)
-        self.bnl3 = nn.BatchNorm1d(100)
-
-        #dropout
-        #self.drop1 = nn.Dropout(p=0.5)
-        self.drop2 = nn.Dropout(p=0.5)
-        self.drop3 = nn.Dropout(p=0.5)
-        self.drop4 = nn.Dropout(p=0.85)
 
 
     def forward(self, x):
