@@ -14,18 +14,13 @@ class PretrainedNetwork(torch.nn.Module):
         # self.flatten = nn.Flatten()
 
         self.prebase = models.resnet18(pretrained=True)
+        self.prebase = torch.nn.Sequential(*(list(self.prebase.children())[:-1]))
 
         self.fc1 = nn.Linear(1000, 1000)
         self.fc2 = nn.Linear(1000, 500)
         self.fc3 = nn.Linear(500, 80)
         self.fc4 = nn.Linear(80,5)
         # self.sigmoid = nn.Sigmoid()
-
-        #test
-        
-        self.pool1 = nn.MaxPool2d(2,2)
-        self.pool2 = nn.MaxPool2d(3,2)
-        self.pool3 = nn.MaxPool2d(3,2)
 
         self.bnl1 = nn.BatchNorm1d(1000)
         self.bnl2 = nn.BatchNorm1d(500)
