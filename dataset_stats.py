@@ -1,7 +1,7 @@
 import constants
 import numpy as np
-import cv2
-import statistics 
+import statistics
+from PIL import Image 
 
 from data.StartingDataset import StartingDataset
 dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE)
@@ -9,8 +9,9 @@ dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_ima
 blue = []
 green = []
 red = []
-for i,id in enumerate(self.image_ids):
-    myimg = cv2.imread(self.image_ids[i])
+for i,id in enumerate(dataset.image_ids):
+    with Image.open(dataset.image_ids[i]) as image:
+        myimg = image.load()
     avg_color_per_row = np.average(myimg, axis=0)
     avg_color = np.average(avg_color_per_row, axis=0)/256
     blue.append(avg_color[0])

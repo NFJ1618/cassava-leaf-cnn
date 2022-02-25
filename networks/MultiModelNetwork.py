@@ -6,14 +6,15 @@ import torchvision.models as models
 
 class PretrainedNetwork(torch.nn.Module):
     """
-    Basic logistic regression on 224x224x3 images.
+    Using multiple models to predict a single output
     """
 
     def __init__(self):
         super().__init__()
         # self.flatten = nn.Flatten()
 
-        self.prebase = models.resnet18(pretrained=True)
+        self.prebase1 = models.resnet18(pretrained=True)
+        self.prebase2 = models.
 
         self.fc1 = nn.Linear(1000, 1000)
         self.fc2 = nn.Linear(1000, 1000)
