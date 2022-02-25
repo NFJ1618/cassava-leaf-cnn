@@ -58,11 +58,11 @@ def starting_train(dataset, model, hyperparameters, n_eval, device, img_size):
             step += 1
             # Periodically evaluate our model + log to Tensorboard
             
-            if step >= n_eval and step % n_eval == 0:
+            #if step >= n_eval and step % n_eval == 0:
                 # TODO:
                 # Compute training loss and accuracy.
                 # Log thxe results to Tensorboard.
-                tb_summary.add_scalar('Loss (Training)', loss.item(), epoch)
+                #tb_summary.add_scalar('Loss (Training)', loss.item(), epoch)
                 #print('Training Loss: ', total_loss/(step*32))
                 # tb_summary.add_scalar('Accuracy (Training)', train_accuracy, epoch)
 
