@@ -26,11 +26,12 @@ class StartingDataset(Dataset):
         # transform handler
         if not transform:
             self.transform = transforms.Compose([
-                transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+                transforms.Normalize((0.4303, 0.4967, 0.3135), (0.085, 0.08, 0.102)),
                 #
             ])
         else:
             self.transform = transforms.Compose([
+                # Normalise has magic numbers from dataset_stats.py
                 transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
                 transforms.RandomHorizontalFlip(p=0.25),
                 transforms.ColorJitter(p=0.25),
