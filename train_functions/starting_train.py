@@ -6,7 +6,7 @@ from tqdm import tqdm
 from constants import IMG_SIZE
 
 
-def starting_train(dataset, model, hyperparameters, n_eval, device):
+def starting_train(dataset, model, hyperparameters, n_eval, device, img_size):
     """
     Trains and evaluates a model.
 
@@ -34,7 +34,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
     train_accuracy_arr = []
     val_accuracy_arr = []
 
-    evaluate(val_loader, model, loss_fn, device)
+    evaluate(val_loader, model, loss_fn, device, img_size)
 
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
@@ -76,8 +76,8 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
         avg_loss = total_loss/(step*32)
         print('Training Loss: ', avg_loss)
         loss_arr.append(avg_loss)
-        train_accuracy_arr.append(evaluate_train(train_loader, model, loss_fn, device))
-        val_accuracy_arr.append(evaluate(val_loader, model, loss_fn, device))
+        train_accuracy_arr.append(evaluate_train(train_loader, model, loss_fn, device, img_size))
+        val_accuracy_arr.append(evaluate(val_loader, model, loss_fn, device, img_size))
         print("Test accuracy: ", val_accuracy_arr[-1], " Train accuracy: ", train_accuracy_arr[-1], " Loss: ", loss_arr[-1])
     
     return loss_arr, train_accuracy_arr, val_accuracy_arr
@@ -100,7 +100,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device):
 #    return n_correct / n_total
 
 
-def evaluate(val_loader, model, loss_fn, device):
+def evaluate(val_loader, model, loss_fn, device, img_size):
     """
     Computes the loss and accuracy of a model on the validation dataset.
 
@@ -115,7 +115,7 @@ def evaluate(val_loader, model, loss_fn, device):
             images = images.to(device)
             labels = labels.to(device)
 
-            images = torch.reshape(images, (-1, 3, IMG_SIZE[0], IMG_SIZE[1]))
+            images = torch.reshape(images, (-1, 3, img_size[0], img_size[1]))
             output = model(images)
             predictions = torch.argmax(output, dim = 1)
             correct += (labels == predictions).int().sum().item()
@@ -126,7 +126,7 @@ def evaluate(val_loader, model, loss_fn, device):
 
     return correct/total
 
-def evaluate_train(train_loader, model, loss_fn, device):
+def evaluate_train(train_loader, model, loss_fn, device, img_size):
     """
     Computes the loss and accuracy of a model on the train dataset.
 
@@ -141,7 +141,7 @@ def evaluate_train(train_loader, model, loss_fn, device):
             images = images.to(device)
             labels = labels.to(device)
 
-            images = torch.reshape(images, (-1, 3, IMG_SIZE[0], IMG_SIZE[1]))
+            images = torch.reshape(images, (-1, 3, img_size[0], img_size[1]))
             output = model(images)
             predictions = torch.argmax(output, dim = 1)
             correct += (labels == predictions).int().sum().item()

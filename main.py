@@ -32,18 +32,21 @@ def run(kaggle_path="", pretrained=False):
     print("Kaggle path:", kaggle_path)
 
     # Initalize dataset and model. Then train the model!
-    if not kaggle_path:
-        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=constants.IMG_SIZE, data_ratio=constants.DATA_RATIO)
-    else:
-    #For Kaggle
-        dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=constants.IMG_SIZE)
-    
-    print("Data in class")
 
     if pretrained:
         model = PretrainedNetwork()
+        img_size = constants.IMG_SIZE[0]
     else:
         model = StartingNetwork()
+        img_size = constants.IMG_SIZE[1]
+
+    if not kaggle_path:
+        dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=img_size, data_ratio=constants.DATA_RATIO)
+    else:
+    #For Kaggle
+        dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=img_size)
+    
+    print("Data in class")
 
     model = model.to(device)
     loss_arr, train_accuracy_arr, val_accuracy_arr  = starting_train(
@@ -51,7 +54,8 @@ def run(kaggle_path="", pretrained=False):
         model=model,
         hyperparameters=hyperparameters,
         n_eval=constants.N_EVAL,
-        device = device
+        device = device,
+        img_size = img_size
     )
 
     plt.plot(range(len(loss_arr)), loss_arr)
@@ -61,4 +65,4 @@ def run(kaggle_path="", pretrained=False):
 
 if __name__ == "__main__":
     #test()
-    run(pretrained=False)
+    run(pretrained=True)
