@@ -44,7 +44,7 @@ def run(kaggle_path="", pretrained=False):
         dataset = StartingDataset(csv_path='data/train.csv', folder_path='data/train_images', img_size=img_size, data_ratio=constants.DATA_RATIO)
     else:
     #For Kaggle
-        dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=img_size)
+        dataset = StartingDataset(csv_path=kaggle_path + '/train.csv', folder_path=kaggle_path + '/train_images', img_size=img_size, data_ratio=constants.DATA_RATIO)
     
     print("Data in class")
 
