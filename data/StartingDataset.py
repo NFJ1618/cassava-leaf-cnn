@@ -4,6 +4,7 @@ from PIL import Image
 from torchvision import transforms
 from random import randint
 from torch.utils.data import DataLoader, Subset
+from constants import IMG_SIZE
 from sklearn.model_selection import train_test_split
 
 
@@ -29,7 +30,13 @@ class StartingDataset(Dataset):
                 #
             ])
         else:
-            self.transform = transform
+            self.transform = transforms.Compose([
+                transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+                transforms.RandomHorizontalFlip(p=0.25),
+                transforms.ColorJitter(p=0.25),
+                transforms.RandomCrop(p = 0.25, size = IMG_SIZE)
+            ])
+        
 
     def __getitem__(self, index):
         #inputs = torch.zeros([3, 224, 224])
@@ -39,7 +46,6 @@ class StartingDataset(Dataset):
 
         inputs = transforms.ToTensor()(inputs)
         inputs = self.transform(inputs)
-
         
         return inputs, self.labels[index]
 
@@ -72,3 +78,8 @@ class StartingDataset(Dataset):
         validation_loader = DataLoader(test_split, batch_size=batch_size, shuffle=True)
 
         return train_loader, validation_loader
+
+
+
+
+
