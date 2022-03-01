@@ -26,8 +26,9 @@ def starting_train(dataset, model, hyperparameters, n_eval, device, img_size):
     print("Data loaded")
 
     # Initalize optimizer (for gradient descent) and loss function
-    optimizer = optim.Adam(model.parameters())
+    optimizer = optim.Adam(model.parameters(), lr = 0.1)
     loss_fn = nn.CrossEntropyLoss()
+    lr_scheduler = MultiStepLR(optimizer, milestones=[20, 40], gamma=0.1)
 
     tb_summary = tensorboard.SummaryWriter()
     loss_arr = []
@@ -80,7 +81,7 @@ def starting_train(dataset, model, hyperparameters, n_eval, device, img_size):
         train_accuracy_arr.append(evaluate_train(train_loader, model, loss_fn, device, img_size))
         val_accuracy_arr.append(evaluate(val_loader, model, loss_fn, device, img_size))
         print("Test accuracy: ", val_accuracy_arr[-1], " Train accuracy: ", train_accuracy_arr[-1], " Loss: ", loss_arr[-1])
-    
+        lr_scheduler.step()
     return loss_arr, train_accuracy_arr, val_accuracy_arr
 
 
