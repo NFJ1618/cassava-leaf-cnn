@@ -4,6 +4,7 @@ import torch.optim as optim
 from torch.utils import tensorboard
 from tqdm import tqdm
 from constants import IMG_SIZE
+from torch.optim.lr_scheduler import  MultiStepLR
 
 
 def starting_train(dataset, model, hyperparameters, n_eval, device, img_size):
